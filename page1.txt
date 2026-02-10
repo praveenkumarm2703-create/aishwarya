@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Aishwarya ❤️</title>
+
+<style>
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:black;
+font-family:Arial;
+color:white;
+overflow:hidden;
+}
+
+.container{
+text-align:center;
+}
+
+img{
+width:220px;
+border-radius:20px;
+box-shadow:0 0 30px rgba(255,0,100,0.6);
+}
+
+h2{
+margin-top:20px;
+}
+
+button{
+padding:15px 30px;
+font-size:25px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+margin:15px;
+transition:0.3s;
+}
+
+#yes{
+background:#ff0055;
+color:white;
+}
+
+#no{
+background:gray;
+color:white;
+position:absolute;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<img src="https://i.imgur.com/2DhmtJ4.png">
+
+<h2>Aishwarya, will you be my forever? ❤️</h2>
+
+<button id="yes" onclick="growYes()">Yes</button>
+<button id="no" onmouseover="moveNo()">No</button>
+
+</div>
+
+<audio id="music" loop>
+<source src="https://www2.cs.uic.edu/~i101/SoundFiles/StarWars60.wav">
+</audio>
+
+<script>
+
+let scale=1;
+let clicks=0;
+
+function growYes(){
+
+clicks++;
+scale+=0.5;
+
+let btn=document.getElementById("yes");
+
+btn.style.transform=`scale(${scale})`;
+btn.style.filter=`saturate(${100+clicks*60}%)`;
+
+navigator.vibrate([100,50,100]);
+
+if(clicks>=5){
+
+document.body.style.transition="1s";
+document.body.style.opacity="0";
+
+setTimeout(()=>{
+window.location.href="page2.html";
+},1000);
+
+}
+
+}
+
+function moveNo(){
+
+let no=document.getElementById("no");
+
+no.style.left=Math.random()*window.innerWidth+"px";
+no.style.top=Math.random()*window.innerHeight+"px";
+
+navigator.vibrate(50);
+
+}
+
+// play music after first touch
+document.body.addEventListener("click",()=>{
+document.getElementById("music").play();
+},{once:true});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aishwarya ❤️ Praveen Kumar</title>
+
+<style>
+
+body{
+margin:0;
+height:100vh;
+background:black;
+overflow:hidden;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+font-family:Arial;
+color:white;
+}
+
+canvas{
+position:absolute;
+top:0;
+left:0;
+}
+
+.text{
+font-size:40px;
+opacity:0;
+animation:fadeIn 3s forwards;
+text-align:center;
+z-index:1;
+}
+
+.name{
+font-size:55px;
+background:linear-gradient(90deg,#ff0055,#ff77aa,#ff0055);
+-webkit-background-clip:text;
+color:transparent;
+animation:shine 3s infinite linear;
+}
+
+@keyframes fadeIn{
+to{opacity:1;}
+}
+
+@keyframes shine{
+0%{background-position:-200px;}
+100%{background-position:200px;}
+}
+
+</style>
+</head>
+<body>
+
+<canvas id="hearts"></canvas>
+
+<div class="text">
+
+<div>Forever begins now...</div>
+
+<div class="name">
+Aishwarya ❤️ Praveen Kumar
+</div>
+
+</div>
+
+<audio autoplay loop>
+<source src="https://www2.cs.uic.edu/~i101/SoundFiles/CantinaBand60.wav">
+</audio>
+
+<script>
+
+navigator.vibrate([200,100,200,100,300]);
+
+// heart explosion
+const canvas=document.getElementById("hearts");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let hearts=[];
+
+function createHeart(){
+
+return{
+x:canvas.width/2,
+y:canvas.height/2,
+size:Math.random()*20+10,
+speedX:(Math.random()-0.5)*6,
+speedY:(Math.random()-0.5)*6,
+life:100
+};
+
+}
+
+for(let i=0;i<120;i++){
+hearts.push(createHeart());
+}
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+hearts.forEach(h=>{
+
+ctx.fillStyle="red";
+ctx.font=h.size+"px Arial";
+ctx.fillText("❤️",h.x,h.y);
+
+h.x+=h.speedX;
+h.y+=h.speedY;
+h.life--;
+
+});
+
+requestAnimationFrame(draw);
+
+}
+
+draw();
+
+</script>
+
+</body>
+</html>
