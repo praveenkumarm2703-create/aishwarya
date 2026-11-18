@@ -11,6 +11,7 @@ A small interactive website you can send as a surprise. It's funny, it's romanti
 
 | Screen | What happens |
 | --- | --- |
+| **Password lock** | A “Top Secret 🔐” screen. She types the secret password. Wrong guesses shake the box and show funny messages, and after 2 wrong tries the hint appears (or she can tap “I need a hint 🙈”). Once she gets it right, the site remembers on that phone. |
 | **Intro** | “Hey You! ❤️”. She has to confirm she is extremely cute. The **No** button runs away from her finger, shows a new funny message each time, and the **Yes** button gets bigger. |
 | **Layer 1: The Cute Test** | 3 questions. Each answer gets its own funny reaction, the mascot's mood changes and a cuteness meter fills up. |
 | **Layer 2: The Love Detector** | 3 Yes/No questions on a scanning card, with replies like *“System alert: Excessive cuteness detected.”* |
@@ -79,6 +80,7 @@ Open **`src/config.js`**. Everything she reads is in that file:
 
 - `myName`, `herName`
 - `site.title`, `site.description`: the browser tab title and the link preview
+- `lock`: the password lock. Set `answers` (one or more accepted passwords) and `hint`. Capitals, spaces, dots, slashes and dashes are ignored, so for a date like `14/02/2024` you can write `'14022024'`. Set `enabled: false` to remove the lock. (It's a cute lock, not real security: the answer is inside the site's code.)
 - `intro`: the greeting, the buttons and the funny messages for the runaway No button
 - `layer1` … `layer5`: titles, questions, answers, reactions and quotes
 - `layer6`: the envelope label, headline, **love letter** paragraphs, sign-off and signature

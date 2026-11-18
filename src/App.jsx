@@ -7,12 +7,22 @@ import Background from './components/Background.jsx';
 import TopBar from './components/TopBar.jsx';
 import UnlockOverlay from './components/UnlockOverlay.jsx';
 import Intro from './screens/Intro.jsx';
+import LockScreen from './screens/LockScreen.jsx';
 import QuizLayer from './screens/QuizLayer.jsx';
 import MemoryLayer from './screens/MemoryLayer.jsx';
 import HeartLayer from './screens/HeartLayer.jsx';
 import GrandReveal from './screens/GrandReveal.jsx';
 
 const LAYERS = [null, config.layer1, config.layer2, config.layer3, config.layer4, config.layer5, config.layer6];
+
+const LOCK_KEY = 'six-layers-of-love:lock-passed';
+const lockPassedBefore = () => {
+  try {
+    return localStorage.getItem(LOCK_KEY) === '1';
+  } catch {
+    return false;
+  }
+};
 
 const pageVariants = {
   initial: { opacity: 0, y: 30, scale: 0.98 },
@@ -25,6 +35,15 @@ export default function App() {
   const { screen, unlocked, goTo, completeIntro, completeLayer, restart } = progress;
   const layer = SCREENS.indexOf(screen); // 0 = intro, 1..6
   const [unlocking, setUnlocking] = useState(null); // { from, to }
+  const [locked, setLocked] = useState(() => !!config.lock?.enabled && !lockPassedBefore());
+  const passLock = useCallback(() => {
+    try {
+      localStorage.setItem(LOCK_KEY, '1');
+    } catch {
+      /* ignore */
+    }
+    setLocked(false);
+  }, []);
 
   // Music may only start after she interacts with the page.
   useEffect(() => {
@@ -50,10 +69,10 @@ export default function App() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' });
     // match the overscroll area + phone browser bar to the current scene
-    const isDark = screen === 'l6';
+    const isDark = screen === 'l6' && !locked;
     document.documentElement.style.background = isDark ? '#1a0526' : '';
     document.querySelector('meta[name="theme-color"]')?.setAttribute('content', isDark ? '#1a0526' : config.site.themeColor);
-  }, [screen]);
+  }, [screen, locked]);
 
   const finishLayer = (n) => {
     if (n === 5) completeLayer(5); // straight into the cinematic finale
@@ -74,6 +93,7 @@ export default function App() {
   const back = layer > 0 ? () => goTo(SCREENS[layer - 1]) : null;
 
   const renderScreen = () => {
+    if (locked) return <LockScreen onUnlock={passLock} />;
     switch (screen) {
       case 'l1':
         return <QuizLayer number={1} data={config.layer1} variant="cute" onComplete={() => finishLayer(1)} />;
@@ -92,24 +112,24 @@ export default function App() {
     }
   };
 
-  const dark = screen === 'l6';
+  const dark = screen === 'l6' && !locked;
 
   return (
     <div className={`app ${dark ? 'app--dark' : ''}`}>
       <Background variant={dark ? 'dark' : 'light'} count={dark ? 10 : 22} />
 
       <TopBar
-        layer={layer}
+        layer={locked ? 0 : layer}
         unlocked={unlocked}
         dark={dark}
-        onBack={back}
+        onBack={locked ? null : back}
         onJump={(n) => goTo(SCREENS[n])}
         onRestart={restart}
       />
 
       <main className="main">
         <AnimatePresence mode="wait">
-          <motion.div key={screen} className="page" variants={pageVariants} initial="initial" animate="animate" exit="exit">
+          <motion.div key={locked ? 'lock' : screen} className="page" variants={pageVariants} initial="initial" animate="animate" exit="exit">
             {renderScreen()}
           </motion.div>
         </AnimatePresence>

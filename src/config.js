@@ -38,6 +38,32 @@ const config = {
     volume: 0.5,
   },
 
+  // ---------- PASSWORD LOCK ----------
+  // A secret screen she must pass before the surprise opens.
+  // `answers`: every accepted password. Capitals, spaces and dots are ignored,
+  // so 'Aishwarya', 'aishwarya ' and 'AISHWARYA' all work.
+  // Example for a date: answers: ['14022024', '14/02/2024'] (slashes/dashes are ignored too).
+  // Note: this is a cute lock, not real security — the answer is inside the site's code.
+  lock: {
+    enabled: true,
+    answers: ['{her}'],
+    title: 'Top Secret 🔐',
+    prompt: 'This surprise is only for one special person. Prove it’s you.',
+    placeholder: 'Enter the secret password',
+    hint: 'Hint: it’s the most beautiful name I know 💕',
+    hintButton: 'I need a hint 🙈',
+    // shown one after another for wrong guesses
+    wrongMessages: [
+      'Hmm… that’s not it 🤔',
+      'Nope! Are you an impostor? 🕵️',
+      'Wrong again… want a hint? 👀',
+      'Think harder, cutie 😜',
+      'So close… (maybe) 😂',
+    ],
+    button: 'Unlock 💌',
+    success: 'Access granted. Welcome, {her} ❤️',
+  },
+
   // ---------- INTRO ----------
   intro: {
     greeting: 'Hey You! ❤️',
